@@ -1,15 +1,17 @@
+import { INSTRUMENTS, INSTRUMENTS_LIST } from "@/constants/instruments";
 import { SCALE_PATTERN_DETAILS, SCALE_PATTERN_DETAILS_LIST } from "@/constants/scalePatterns";
-import { getMajorScale, getScaleFromPattern } from "@/lib/theory";
+import { getNoteColor, getScaleFromPattern } from "@/lib/theory";
+import type { Instrument } from "@/types/instrument";
 import type { Note } from "@/types/notes";
 import { useMemo, useState } from "react";
 import { NoteElement } from "../core/noteElement";
 import { NoteSelect } from "../core/noteSelect";
 import { Scale } from "../core/scale";
+import { Staff } from "../core/staff";
 import { Guitar } from "../instruments/guitar/guitar";
 import { Piano } from "../instruments/piano/piano";
 import { Badge } from "../ui/badge";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
-import { Staff } from "../core/staff";
 
 export function ScaleSelect({ value, tonic, onValueChange }: { value: string, tonic?: Note, onValueChange: (value: string) => void }) {
   const selectedScale = useMemo(() => SCALE_PATTERN_DETAILS[value as keyof typeof SCALE_PATTERN_DETAILS], [value])
@@ -23,11 +25,11 @@ export function ScaleSelect({ value, tonic, onValueChange }: { value: string, to
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="p-1.5">
+      <SelectTrigger className="p-1.5 bg-background">
         <SelectValue placeholder="Select a scale">
           {tonic && <NoteElement colorize note={tonic} className="size-6 min-w-6" />}
 
-          {selectedScale.name}
+          {selectedScale.name} Scale
         </SelectValue>
       </SelectTrigger>
 
@@ -105,22 +107,55 @@ export function ScaleSection({ selectedScaleId, tonic, onScaleChange }: { select
   )
 }
 
+export function InstrumentSelect({ value: instrument, onValueChange }: { value: Instrument, onValueChange: (value: Instrument) => void }) {
+  return (
+    <Select value={instrument.id} onValueChange={(id) => onValueChange(INSTRUMENTS[id])}>
+      <SelectTrigger className="p-1.5 bg-background">
+        <SelectValue placeholder="Select an instrument">
+          <instrument.icon className="size-6 min-w-6" />
+
+          {instrument.name}
+        </SelectValue>
+      </SelectTrigger>
+
+      <SelectContent>
+        {INSTRUMENTS_LIST.map(instrument => (
+          <SelectItem key={instrument.id} value={instrument.id}>
+            <instrument.icon className="size-6 min-w-6" />
+
+            {instrument.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export function Main() {
   const [key, setKey] = useState<Note>('C/B#')
   const [selectedScaleId, setSelectedScaleId] = useState<keyof typeof SCALE_PATTERN_DETAILS>('MAJOR')
 
   const scale = useMemo(() => getScaleFromPattern(SCALE_PATTERN_DETAILS[selectedScaleId].pattern, key), [key, selectedScaleId])
 
+  const [instrument, setInstrument] = useState(INSTRUMENTS_LIST[0])
+
+  const instrumentColor = useMemo(() => getNoteColor(key), [key])
+
   return (
     <main className='flex-1 flex flex-col items-center w-full p-4'>
       <div className="flex-1 flex flex-col items-center justify-center gap-16 max-w-6xl">
-        {/* key */}
-        <div className="flex flex-col items-center gap-1">
-          <small>Key</small>
+        <div className="flex items-center gap-2">
+          {/* key */}
+          <div className="relative flex flex-col items-center gap-1">
+            <small className="absolute bottom-full left-1/2 -translate-1/2">Key</small>
 
-          <Badge className='flex flex-col items-center gap-2'>
-            <NoteSelect colorize note={key} onChange={n => setKey(n)} />
-          </Badge>
+            <Badge className='flex flex-col items-center gap-2'>
+              <NoteSelect colorize note={key} onChange={n => setKey(n)} />
+            </Badge>
+          </div>
+
+          {/* instrument */}
+          <InstrumentSelect value={instrument} onValueChange={setInstrument} />
         </div>
 
         {/* staff */}
@@ -133,10 +168,10 @@ export function Main() {
         </div>
 
         {/* guitar */}
-        <Guitar constantNotes={scale} />
+        {instrument.id === 'guitar' && <div className="my-24"><Guitar constantNotes={scale} color={instrumentColor} /></div>}
 
         {/* piano */}
-        <Piano constantNotes={scale} />
+        {instrument.id === 'piano' && <div className="my-24"><Piano constantNotes={scale} color={instrumentColor} /></div>}
       </div>
     </main>
   )

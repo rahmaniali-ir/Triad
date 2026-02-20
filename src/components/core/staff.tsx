@@ -61,12 +61,13 @@ export function Staff({ notes = [] }: { notes?: Notes }) {
           const top = ((keyNoteTopOffset + 1) * STAFF.NOTE_HEAD_SIZE / 2) - (lineIndex * STAFF.NOTE_HEAD_SIZE / 2) - 2
 
           return (
-            <div key={index + '-' + note} style={{ width: STAFF.NOTE_HEAD_SIZE + 'px' }} className="relative mx-2">
+            <div key={index} style={{ width: STAFF.NOTE_HEAD_SIZE + 'px' }} className="relative mx-2">
               <StaffNote
                 note={note}
                 className={cn("absolute left-1/2 -translate-x-1/2")}
                 style={{
                   top: top + 'px',
+                  transition: 'top .3s ease',
                 }}
               />
             </div>

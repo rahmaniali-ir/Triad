@@ -25,7 +25,7 @@ export function ChromaticScale({ startingNote, constantNotes }: { startingNote: 
     <div className="flex justify-between gap-px w-full">
       {scale.map((note, index) => (
         <ScaleNote
-          key={index + '-' + note}
+          key={index}
           note={note}
           isConstant={constantNotes.includes(note)} />
       ))}

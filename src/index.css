@@ -123,4 +123,8 @@
     @apply flex flex-col min-h-screen bg-background text-foreground;
     user-select: none;
   }
+
+  ::-webkit-scrollbar {
+    @apply hidden;
+  }
 }

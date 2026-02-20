@@ -2,8 +2,10 @@ import type { Notes } from "@/types/notes";
 import { GuitarString } from "./guitarString";
 import type { InstrumentProps } from "@/types/instrument";
 import { GUITAR } from "@/constants/guitar";
+import { ElectricGuitar } from "@/assets/electricGuitar";
+import { cn } from "@/lib/utils";
 
-export function Guitar({ constantNotes = [] }: InstrumentProps) {
+export function Guitar({ color, constantNotes = [] }: InstrumentProps) {
   const openNotes: Notes = [
     'E/F♭',
     'A',
@@ -14,7 +16,15 @@ export function Guitar({ constantNotes = [] }: InstrumentProps) {
   ]
 
   return (
-    <div className="relative flex">
+    <div className="relative flex isolate perspective-distant transform-style-preserve-3d">
+      <ElectricGuitar
+        className={cn(
+          "absolute top-1/2 left-[64%] -translate-1/2 h-[50vh] pointer-events-none -z-10",
+          "mask-[radial-gradient(ellipse_at_top_left,black_50%,_transparent)]"
+        )}
+        style={{ color: `color-mix(in srgb, ${color}, var(--foreground))` }}
+      />
+
       {/* neck */}
       <div className="flex flex-col">
         {/* inlays */}
@@ -36,13 +46,15 @@ export function Guitar({ constantNotes = [] }: InstrumentProps) {
         </div>
 
         {/* strings & frets */}
-        {openNotes.map((note, index) => (
-          <GuitarString
-            key={index + '-' + note}
-            openNote={note}
-            constantNotes={constantNotes}
-          />
-        ))}
+        <div className="flex flex-col-reverse">
+          {openNotes.map((note, index) => (
+            <GuitarString
+              key={index + '-' + note}
+              openNote={note}
+              constantNotes={constantNotes}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

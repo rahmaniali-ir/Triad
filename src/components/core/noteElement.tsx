@@ -5,8 +5,8 @@ import type { Note } from "@/types/notes";
 import type { HTMLProps } from "react";
 
 export function NoteElement(
-  { note, colorize = false, className, style, ...props }:
-    HTMLProps<HTMLDivElement> & { note: Note, colorize?: boolean }
+  { note, colorize = false, className, style, noteNameClassName, ...props }:
+    HTMLProps<HTMLDivElement> & { note: Note, colorize?: boolean, noteNameClassName?: string }
 ) {
   const { showAltNotes } = useSettings()
   const [mainName, altName] = note.split('/')
@@ -16,7 +16,7 @@ export function NoteElement(
   return (
     <div
       className={cn(
-        "relative size-8 min-w-8 flex items-center justify-center rounded-full bg-neutral-200 p-1 shadow-xs",
+        "relative size-8 min-w-8 flex rounded-full bg-neutral-200 p-1 shadow-xs",
         "transition-all duration-300 hover:[--note-bg-opacity:75%]",
         "before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-current/5",
         className
@@ -27,14 +27,21 @@ export function NoteElement(
       }}
       {...props}
     >
-      <span className="text-xs">{mainName}</span>
+      <div
+        className={cn(
+          "flex flex-1 items-center justify-center text-xs",
+          noteNameClassName
+        )}
+      >
+        <span>{mainName}</span>
 
-      {showAltNotes && altName && (
-        <>
-          <small className="text-[8px]">/</small>
-          <small>{altName}</small>
-        </>
-      )}
+        {showAltNotes && altName && (
+          <>
+            <small>/</small>
+            <span>{altName}</span>
+          </>
+        )}
+      </div>
     </div>
   )
 }

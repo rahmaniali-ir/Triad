@@ -13,8 +13,8 @@ export function PianoKey({ note, isConstant = false }: { note: Note, isConstant?
     <div
       className={cn(
         "group/key relative flex h-full",
-        isAccidental && "absolute top-0 left-0 -translate-x-1/2 w-4 h-2/3 bg-black z-10 rounded-xs",
-        !isAccidental && "w-8 border border-neutral-300 rounded-sm",
+        isAccidental && "absolute top-0 left-0 -translate-x-1/2 w-4 h-2/3 bg-neutral-900 z-10 rounded-xs",
+        !isAccidental && "bg-neutral-50 w-8 border border-neutral-300 rounded-sm",
       )}
     >
       <NoteElement
@@ -31,16 +31,27 @@ export function PianoKey({ note, isConstant = false }: { note: Note, isConstant?
   )
 }
 
-export function Piano({ constantNotes = [] }: InstrumentProps) {
+export function Piano({ color, constantNotes = [] }: InstrumentProps) {
   const notes = getChromaticScaleFrom('C/B#', PIANO.keyCount)
 
   return (
-    <div className="flex h-24">
-      {notes.map((note, index) => (
-        <div key={index + '-' + note} className="relative flex h-full">
-          <PianoKey note={note} isConstant={constantNotes.includes(note)} />
-        </div>
-      ))}
+    <div
+      className="flex flex-col gap-2 py-2 px-4 rounded-xl"
+      style={{
+        backgroundColor: `color-mix(in srgb, transparent, color-mix(in srgb, ${color}, var(--foreground)))`
+      }}
+    >
+      <div className="relative h-16 w-full bg-neutral-200/15 rounded-lg backdrop-blur-sm">
+        <img src="/textures/piano-body.png" className="absolute top-0 left-0 size-full object-cover rounded-[inherit] mix-blend-screen opacity-15" />
+      </div>
+
+      <div className="flex h-24">
+        {notes.map((note, index) => (
+          <div key={index + '-' + note} className="relative flex h-full">
+            <PianoKey note={note} isConstant={constantNotes.includes(note)} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
