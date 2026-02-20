@@ -34,8 +34,12 @@ export function NoteSelect({
   const circleSize = size * 2
 
   const valueIndex = scale.findIndex(note => note === value)
-  const valueTop = Math.sin(valueIndex * theta) * size
-  const valueLeft = Math.cos(valueIndex * theta) * size
+
+  const getTop = (index: number) => Math.sin(index * theta - Math.PI) * size
+  const getLeft = (index: number) => Math.cos(index * theta - Math.PI) * size
+
+  const valueTop = getTop(3)
+  const valueLeft = getLeft(3)
 
   const changeOpen = (value: boolean) => {
     if (open === undefined)
@@ -98,7 +102,7 @@ export function NoteSelect({
           style={{
             top: `${isOpen ? valueTop : 0}px`,
             left: `${isOpen ? valueLeft : 0}px`,
-            transition: 'all .3s ease-in-out, opacity .3s .2s ease'
+            transition: 'all .2s ease-in-out, opacity .4s .1s ease'
           }}
           onClick={toggle}
           className={cn(
@@ -112,6 +116,7 @@ export function NoteSelect({
         style={{
           height: circleSize + 'px',
           width: circleSize + 'px',
+          rotate: (valueIndex - 3) * -theta + 'rad',
           boxShadow: `0 0 64px color-mix(in srgb, var(--color-neutral-500) 35%, transparent), inset 0 0 ${circleSize}px 24px var(--background)`
         }}
         className={cn(
@@ -122,8 +127,9 @@ export function NoteSelect({
         )}
       >
         {scale.map((n, index) => {
-          const top = Math.sin(index * theta) * size
-          const left = Math.cos(index * theta) * size
+          const top = getTop(index)
+          const left = getLeft(index)
+          const rotate = (index - 3) * theta
 
           return (
             <NoteElement
@@ -133,6 +139,7 @@ export function NoteSelect({
               style={{
                 top: `calc(50% + ${top}px)`,
                 left: `calc(50% + ${left}px)`,
+                rotate: rotate + 'rad',
               }}
               onClick={() => selectNote(n)}
               className={cn(

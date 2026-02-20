@@ -56,7 +56,7 @@ export const getHarmonicMinorScale = (root: Note) =>
 export const getNoteColor = (n: Note) => {
   const unit = 365 / CHROMATIC_SCALE.length
 
-  return `hsl(${CHROMATIC_SCALE.findIndex(x => x === n) * unit}deg 100% 50%)`
+  return `hsl(${CHROMATIC_SCALE.findIndex(x => x === n) * unit - 90}deg 100% 50%)`
 }
 
 export const getChromaticScaleFrom = (

@@ -9,6 +9,7 @@ import { Guitar } from "../instruments/guitar/guitar";
 import { Piano } from "../instruments/piano/piano";
 import { Badge } from "../ui/badge";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { Staff } from "../core/staff";
 
 export function ScaleSelect({ value, tonic, onValueChange }: { value: string, tonic?: Note, onValueChange: (value: string) => void }) {
   const selectedScale = useMemo(() => SCALE_PATTERN_DETAILS[value as keyof typeof SCALE_PATTERN_DETAILS], [value])
@@ -113,16 +114,20 @@ export function Main() {
   return (
     <main className='flex-1 flex flex-col items-center w-full p-4'>
       <div className="flex-1 flex flex-col items-center justify-center gap-16 max-w-6xl">
+        {/* key */}
+        <div className="flex flex-col items-center gap-1">
+          <small>Key</small>
+
+          <Badge className='flex flex-col items-center gap-2'>
+            <NoteSelect colorize note={key} onChange={n => setKey(n)} />
+          </Badge>
+        </div>
+
+        {/* staff */}
+        <Staff notes={scale} />
+
+        {/* scale */}
         <div className="flex flex-col gap-8">
-          {/* key */}
-          <div className="flex">
-            <Badge className='flex items-center gap-2'>
-              <span>Key of </span>
-
-              <NoteSelect colorize note={key} onChange={n => setKey(n)} />
-            </Badge>
-          </div>
-
           {/* scale */}
           <ScaleSection tonic={key} selectedScaleId={selectedScaleId} onScaleChange={setSelectedScaleId} />
         </div>
