@@ -115,7 +115,7 @@ export function NoteSelect({
           boxShadow: `0 0 64px color-mix(in srgb, var(--color-neutral-500) 35%, transparent), inset 0 0 ${circleSize}px 24px var(--background)`
         }}
         className={cn(
-          "absolute top-1/2 left-1/2 -translate-1/2 border-2 border-neutral-200/75 rounded-full -z-10 backdrop-blur-md",
+          "absolute top-1/2 left-1/2 -translate-1/2 border-2 border-neutral-200/75 rounded-full -z-10",
           "opacity-0 scale-50 rotate-10 transition-all duration-500",
           !isOpen && "pointer-events-none",
           isOpen && "opacity-100 scale-100 rotate-0"

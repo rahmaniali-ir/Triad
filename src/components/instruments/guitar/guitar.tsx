@@ -19,7 +19,7 @@ export function Guitar({ constantNotes = [] }: InstrumentProps) {
       <div className="flex flex-col">
         {/* inlays */}
         <div className="absolute top-0 left-0 w-full h-full">
-          {GUITAR.inlayFrets.map((fret) => (
+          {GUITAR.inlayFrets.filter(fret => fret < GUITAR.fretCount).map((fret) => (
             <div
               key={fret}
               className="absolute top-0 bottom-0 flex flex-col items-center justify-around"

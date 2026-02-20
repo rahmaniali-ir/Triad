@@ -16,7 +16,7 @@ export function NoteElement(
   return (
     <div
       className={cn(
-        "relative size-8 flex items-center justify-center rounded-full bg-neutral-200 p-1 shadow-xs",
+        "relative size-8 min-w-8 flex items-center justify-center rounded-full bg-neutral-200 p-1 shadow-xs",
         "transition-all duration-300 hover:[--note-bg-opacity:75%]",
         "before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-current/5",
         className

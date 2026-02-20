@@ -1,6 +1,6 @@
-import type { Interval } from "@/types/interval"
+import type { IntervalDetails } from "@/types/interval"
 
-export const INTERVALS: Interval[] = [
+export const INTERVALS: IntervalDetails[] = [
   {
     halfSteps: 0,
     name: "Unison",
@@ -8,8 +8,18 @@ export const INTERVALS: Interval[] = [
   },
   {
     halfSteps: 1,
+    name: "Half Step",
+    symbol: "H",
+  },
+  {
+    halfSteps: 1,
     name: "minor 2nd",
     symbol: "m2",
+  },
+  {
+    halfSteps: 2,
+    name: "Whole Step",
+    symbol: "W",
   },
   {
     halfSteps: 2,

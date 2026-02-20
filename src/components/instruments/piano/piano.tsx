@@ -12,17 +12,18 @@ export function PianoKey({ note, isConstant = false }: { note: Note, isConstant?
   return (
     <div
       className={cn(
-        "relative flex h-full",
+        "group/key relative flex h-full",
         isAccidental && "absolute top-0 left-0 -translate-x-1/2 w-4 h-2/3 bg-black z-10 rounded-xs",
         !isAccidental && "w-8 border border-neutral-300 rounded-sm",
       )}
     >
       <NoteElement
-        colorize
+        colorize={isConstant}
         note={note}
         className={cn(
           "absolute bottom-0 left-1/2 -translate-x-1/2",
           "scale-50 opacity-0 transition-all duration-300",
+          "group-hover/key:opacity-100 group-hover/key:scale-75",
           isConstant && "opacity-100 scale-75"
         )}
       />

@@ -10,13 +10,13 @@ export function GuitarFret({ note, isConstant = false, className, ...props }: HT
     <div className={cn("group/fret relative", className)} {...props}>
 
       <NoteElement
-        colorize
+        colorize={isConstant}
         note={note}
         className={cn(
           "absolute top-1/2 left-1/2 -translate-1/2 z-20",
           "scale-50 opacity-0 transition-all duration-300",
           "group-hover/fret:opacity-100 group-hover/fret:scale-75",
-          isConstant && "opacity-100 scale-75"
+          isConstant && "opacity-100 scale-75",
         )}
       />
     </div>
