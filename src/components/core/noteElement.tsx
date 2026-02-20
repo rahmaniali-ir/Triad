@@ -1,0 +1,40 @@
+import { useSettings } from "@/contexts/settings";
+import { getNoteColor } from "@/lib/theory";
+import { cn } from "@/lib/utils";
+import type { Note } from "@/types/notes";
+import type { HTMLProps } from "react";
+
+export function NoteElement(
+  { note, colorize = false, className, style, ...props }:
+    HTMLProps<HTMLDivElement> & { note: Note, colorize?: boolean }
+) {
+  const { showAltNotes } = useSettings()
+  const [mainName, altName] = note.split('/')
+
+  const color = `color-mix(in srgb, ${getNoteColor(note)} var(--note-bg-opacity, 25%), var(--background))`
+
+  return (
+    <div
+      className={cn(
+        "relative size-8 flex items-center justify-center rounded-full bg-neutral-200 p-1 shadow-xs",
+        "transition-all duration-300 hover:[--note-bg-opacity:75%]",
+        "before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-current/5",
+        className
+      )}
+      style={{
+        background: colorize ? color : undefined,
+        ...style
+      }}
+      {...props}
+    >
+      <span className="text-xs">{mainName}</span>
+
+      {showAltNotes && altName && (
+        <>
+          <small className="text-[8px]">/</small>
+          <small>{altName}</small>
+        </>
+      )}
+    </div>
+  )
+}

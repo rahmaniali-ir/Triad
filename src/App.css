@@ -1,0 +1,13 @@
+#root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.scale-scroll-hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scale-scroll-hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
